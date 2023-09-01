@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+    <title>Item Details</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="assets/css/fontawesome.css">
+    <link rel="stylesheet" href="assets/css/templatemo-sixteen.css">
+    <link rel="stylesheet" href="assets/css/owl.css">
+
+    <style>
+        img {
+            width: 100px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div>
+        <h1 id="item-name"></h1>
+        <p id="item-price"></p>
+        <p id="item-description"></p>
+        <img id="item-image" src="" alt="Product">
+        <!-- Add more HTML elements for other item details -->
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const itemId = urlParams.get("itemId");
+        const collection = urlParams.get("collection");
+
+        const apiUrl = `https://boiling-fjord-00108-52329a44ed31.herokuapp.com/item/${collection}/${itemId}`;
+
+        if (collection === "collection1") {
+            fetch(apiUrl)
+            .then((response) => response.json())
+            .then((itemData) => {
+                console.log("API response:", itemData);
+
+                // Populate item details on the page
+                document.getElementById("item-name").textContent = itemData.name;
+                document.getElementById("item-price").textContent = itemData.price;
+
+                const specificationsDiv = document.getElementById("item-specifications");
+                for (const [specificationType, detail] of Object.entries(itemData.specifications)) {
+                    const formattedSpecification = `${specificationType} - ${detail}<br>`;
+                    specificationsDiv.insertAdjacentHTML('beforeend', formattedSpecification);
+                }
+
+                // Set the item image
+                const itemImage = document.getElementById("item-image");
+                itemImage.src = itemData.Image;
+                itemImage.alt = itemData.name;
+
+                // Add more code to populate other item details on the page
+            })
+            .catch((error) => {
+                console.error("Error fetching item details:", error);
+            });
+        } else {
+            // TODO: Handle display for collection2 (jumia)
+        }
+
+        /*
+        fetch(apiUrl)
+            .then((response) => response.json())
+            .then((itemData) => {
+                console.log("API response:", itemData);
+
+                // Populate item details on the page
+                document.getElementById("item-name").textContent = itemData.name;
+                document.getElementById("item-price").textContent = itemData.price;
+                document.getElementById("item-description").textContent = itemData.Description;
+
+                // Set the item image
+                const itemImage = document.getElementById("item-image");
+                itemImage.src = itemData.Image;
+                itemImage.alt = itemData.name;
+
+                // Add more code to populate other item details on the page
+            })
+            .catch((error) => {
+                console.error("Error fetching item details:", error);
+            });
+            */
+    </script>
+</body>
+</html>

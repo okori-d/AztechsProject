@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+    <title>Compare Items</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="assets/css/fontawesome.css">
+    <link rel="stylesheet" href="assets/css/templatemo-sixteen.css">
+    <link rel="stylesheet" href="assets/css/owl.css">
+
+
+    <style>
+        img {
+            width: 100px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">
+                    <h2>UniCart</h2>
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">Home </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="products.html">Products</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="compare.html">Compare
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="about.html">About Us</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+    <div class="page-heading products-heading header-text">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="text-content">
+                        <h2>Compare Items</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table within page for Collection 1 -->
+    <div class="container">
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Item Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Image</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody id="compare_table_collection1"></tbody>
+        </table>
+    </div>
+
+    <!-- Table within page for Collection 2 -->
+    <div class="container">
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Item Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Key features</th>
+                    <th scope="col">Specifications</th>
+                    <th scope="col">Product Rating</th>
+                    <th scope="col">Image</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody id="compare_table_collection2"></tbody>
+        </table>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+
+
+    <!--COLLECTION 1-->
+    <script>
+        function getItemDetails(itemId) {
+            // Make an HTTP GET request to fetch the item details
+            fetch(`https://boiling-fjord-00108-52329a44ed31.herokuapp.com/item/collection1/${itemId}`)
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json(); // Convert the response to an object
+                    } else {
+                        throw new Error("Error: " + response.status);
+                    }
+                })
+                .then((itemData) => {
+                    // Populate the item details table
+                    const compareTable = document.getElementById("compare_table_collection1");
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${itemData["Item Name"]}</td>
+                        <td>${itemData.Price}</td>
+                        <td>${itemData.Description}</td>
+                        <td><img src="${itemData.Image}" alt="${itemData["Item Name"]}"/></td>
+                        <td><button onclick="removeItemFromCompare('${itemId}')">Remove</button></td>
+                    `;
+                    compareTable.appendChild(row);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+
+        function loadComparisonItems() {
+            const compareItems = JSON.parse(localStorage.getItem("compareItems")) || [];
+            compareItems.forEach((itemId) => {
+                getItemDetails(itemId);
+            });
+        }
+
+        function removeItemFromCompare(itemId) {
+            // Retrieve comparedItems from localStorage or initialize it as an empty array
+            let comparedItems = JSON.parse(localStorage.getItem("compareItems")) || [];
+
+            // Remove the item from the comparedItems array
+            comparedItems = comparedItems.filter((item) => item !== itemId);
+
+            // Update the comparison table
+            updateComparisonTable(comparedItems);
+
+            // Update the localStorage with the updated comparedItems
+            localStorage.setItem("compareItems", JSON.stringify(comparedItems));
+
+            // Display a notification
+            alert("Item removed from comparison");
+        }
+
+        function updateComparisonTable(comparedItems) {
+            // Get the compare_table element
+            const compareTable = document.getElementById("compare_table_collection1");
+
+            // Clear the existing table content
+            compareTable.innerHTML = "";
+
+            // Loop through the comparedItems array and populate the table
+            comparedItems.forEach((itemId) => {
+                getItemDetails(itemId);
+            });
+        }
+
+        loadComparisonItems();
+    </script>
+
+
+    <!--COLLECTION 2-->
+    <script>
+        // Function to create an image gallery modal
+        function openImageGallery(images) {
+            const modal = document.getElementById("imageGalleryModal");
+            const modalContent = document.getElementById("imageGalleryContent");
+            modalContent.innerHTML = "";
+
+            images.forEach((image) => {
+                const img = document.createElement("img");
+                img.src = image;
+                modalContent.appendChild(img);
+            });
+
+            modal.style.display = "block";
+        }
+        
+        function getItemDetailsCollection2(itemId) {
+            // Make an HTTP GET request to fetch the item details
+            fetch(`https://boiling-fjord-00108-52329a44ed31.herokuapp.com/item/collection2/${itemId}`)
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json(); // Convert the response to an object
+                    } else {
+                        throw new Error("Error: " + response.status);
+                    }
+                })
+                .then((itemData) => {
+                    console.log("Images data:", itemData.images); // Log the fetched data to understand its structure
+                    // Inside getItemDetailsCollection2(itemId) function
+                    if (itemData.images && Array.isArray(itemData.images)) {
+                        // Populate the item details table
+                        const compareTableCollection2 = document.getElementById("compare_table_collection2");
+                        const row = document.createElement("tr");
+                        row.innerHTML = `
+                            <td>${itemData.name}</td>
+                            <td>${itemData.price}</td>
+                            <td>${itemData.key_features}</td>
+                            <td>${itemData.specifications}</td>
+                            <td>${itemData.rating}</td>
+                            <td>
+                                ${itemData.images.map((imageData) => {
+                                    console.log("Processing image data:", imageData);
+                                    if (imageData.startsWith("data:image")) {
+                                        // If the image data is Base64-encoded, use it directly
+                                        return `<img src="${imageData}" alt="${itemData.name}" class="image-expand" />`;
+                                    } else {
+                                        console.log("Image URL:", imageData);
+                                        // If the image data is a URL, create an <img> tag with the URL
+                                        return `<img src="${imageData}" alt="${itemData.name}" class="image-expand" />`;
+                                    }
+                                }).join("")}
+                            </td>
+                            <td><button onclick="removeItemFromCompareCollection2('${itemId}')">Remove</button></td>
+                        `;
+                        compareTableCollection2.appendChild(row);
+
+                        // Add click event to images for expanding
+                        const images = row.querySelectorAll('.image-expand');
+                        images.forEach((image) => {
+                            image.addEventListener('click', () => openImageGallery([image.src]));
+                        });
+                    } else {
+                        console.log("Images array not found or not in the expected format.");
+                    }
+
+                    
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+
+        function loadComparisonItemsCollection2() {
+            const compareItemsCollection2 = JSON.parse(localStorage.getItem("compareItemsJumia")) || [];
+            const validItemIds = compareItemsCollection2.filter((itemId) => itemId !== undefined && itemId !== null);
+            
+            console.log("Loaded items for Collection 2:", validItemIds);
+            
+            validItemIds.forEach((itemId) => {
+                getItemDetailsCollection2(itemId);
+            });
+        }
+
+
+        function removeItemFromCompareCollection2(itemId) {
+            // Retrieve comparedItems from localStorage or initialize it as an empty array
+            let comparedItemsCollection2 = JSON.parse(localStorage.getItem("compareItemsJumia")) || [];
+
+            // Remove the item from the comparedItems array
+            comparedItemsCollection2 = comparedItemsCollection2.filter((item) => item !== itemId);
+
+            // Update the comparison table
+            updateComparisonTableCollection2(comparedItemsCollection2);
+
+            // Update the localStorage with the updated comparedItems
+            localStorage.setItem("compareItemsJumia", JSON.stringify(comparedItemsCollection2));
+
+            // Display a notification
+            alert("Item removed from comparison for Collection 2");
+        }
+
+        
+        function updateComparisonTableCollection2() {
+            // Get the compare_table_collection2 element
+            const compareTableCollection2 = document.getElementById("compare_table_collection2");
+
+            // Clear the existing table content
+            compareTableCollection2.innerHTML = "";
+
+            // Get the comparedItemsCollection2 array from localStorage
+            const comparedItemsCollection2 = JSON.parse(localStorage.getItem("compareItemsJumia")) || [];
+
+            // Loop through the comparedItemsCollection2 array and populate the table
+            comparedItemsCollection2.forEach((itemId) => {
+                getItemDetailsCollection2(itemId);
+            });
+        }
+        
+
+        // Update the item details table for Collection 2
+        /*
+        function updateComparisonTableCollection2(comparedItemsCollection2) {
+            const compareTableCollection2 = document.getElementById("compare_table_collection2");
+            compareTableCollection2.innerHTML = "";
+
+            comparedItemsCollection2.forEach((itemId) => {
+                getItemDetailsCollection2(itemId);
+            });
+        }
+        */
+
+    loadComparisonItemsCollection2();
+</script>
+
+<!-- Image Gallery Modal -->
+<div id="imageGalleryModal" class="modal">
+    <div class="modal-content" id="imageGalleryContent"></div>
+    <span class="close" onclick="closeImageGalleryModal()">&times;</span>
+</div>
+
+
+</body>
+
+</html>

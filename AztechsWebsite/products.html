@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+    <title>Products</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="assets/css/fontawesome.css">
+    <link rel="stylesheet" href="assets/css/templatemo-sixteen.css">
+    <link rel="stylesheet" href="assets/css/owl.css">
+
+    <style>
+        img {
+            width: 100px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- ***** Preloader Start ***** -->
+    <div id="preloader">
+        <div class="jumper">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <!-- ***** Preloader End ***** -->
+
+    <!-- Header -->
+    <header class="">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">
+                    <h2>UniCart</h2>
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                    aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">Home
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="products.html">Products</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="compare.html">Compare</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="about.html">About Us</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Page Content -->
+    <div class="page-heading products-heading header-text">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="text-content">
+                        <h2 style="color: rgb(64, 180, 226);">All Products Collection</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Radio buttons for specifying search collections -->
+    <div class="container">
+        <h3>Choose a website:</h3>
+        <input type="radio" name="website" id="all-products-compared-radio" value="all-products-compared" checked>
+        <label for="all-products-compared-radio">All Products</label>
+        <input type="radio" name="website" id="jiji-radio" value="jiji">
+        <label for="jiji-radio">Jiji</label>
+        <input type="radio" name="website" id="jumia-radio" value="jumia">
+        <label for="jumia-radio">Jumia</label>
+
+        <!-- Search box -->
+        <div class="mt-3">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search items...">
+        </div>
+        <button id="searchButton" class="btn btn-primary">Search</button> <!-- Add id="searchButton" -->
+    </div>
+
+    
+
+    <!-- Table within page -->
+    <div class="container">
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Jiji</th>
+                    <th scope="col">Jumia</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <table class="table table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th scope="col">Brand</th>
+                                    <th scope="col">Item Name</th>
+                                    <th scope="col">Price</th>
+                                </tr>
+                            </thead>
+                            <tbody id="jiji_table_body">
+                                <!-- Jiji items will be populated here -->
+                            </tbody>
+                        </table>
+                    </td>
+                    <td>
+                        <!-- ... (similar structure for Jumia) ... -->
+                        <table class="table table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th scope="col">Brand</th>
+                                    <th scope="col">Item Name</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="jumia_table_body">
+                                <!-- Jumia items will be populated here -->
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <!-- Similar structure for other brands... -->
+            </tbody>
+        </table>
+        <div id="loadMoreRow" class="text-center mt-3">
+            <button id="loadMoreBtn" class="btn btn-primary">Load More</button>
+        </div>
+
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="inner-content">
+                        <p>
+                            Copyright &copy; 2023 Aztechs -
+                            Design: <a rel="nofollow noopener" href="https://templatemo.com" target="_blank">Andrew & Nyanzi</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Additional Scripts -->
+    <script src="assets/js/custom.js"></script>
+    <script src="assets/js/owl.js"></script>
+    <script src="assets/js/slick.js"></script>
+    <script src="assets/js/isotope.js"></script>
+    <script src="assets/js/accordions.js"></script>
+
+    
+
+    <!-- Script for populating Jiji items -->
+    <script>
+
+        // Variables for pagination jiji
+        let currentPage = 0; // Current page index
+        const itemsPerPage = 10; // Items per page
+        let isLoading = false; // Flag to prevent multiple loading calls
+
+        // Load more items function
+        function loadMoreItems() {
+            //console.log("Load More button clicked");
+
+            if (isLoading) return;
+
+            isLoading = true;
+
+            // Fetch data from the API
+            fetch(`https://boiling-fjord-00108-52329a44ed31.herokuapp.com/grouped_items/collection1?page=${currentPage}&limit=${itemsPerPage}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log("API response: ", data);
+
+                    const brandData = data; // The API response is an object with brand keys and item arrays as values
+
+                    const brands = Object.keys(brandData);
+                    const totalItems = brands.reduce((sum, brand) => sum + brandData[brand].length, 0);
+
+                    const startIndex = currentPage * itemsPerPage;
+                    const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+
+                    // Populate the table with items from the brand data
+                    populateJijiTable(brandData, startIndex, endIndex);
+
+                    // Update page index
+                    currentPage++;
+
+                    isLoading = false;
+                })
+                .catch((error) => {
+                    console.error(error);
+                    isLoading = false;
+                });
+        }
+
+        // Variables for Jumia's pagination
+        let currentPage_jumia = 0; // Current page index
+        const itemsPerPage_jumia = 10; // Items per page
+        let isLoading_jumia = false; // Flag to prevent multiple loading calls
+
+
+        // Load more items function for jumia
+        function loadMoreItemsJumia() {
+            //console.log("Load More button clicked");
+
+            if (isLoading_jumia) return;
+
+            isLoading_jumia = true;
+
+            // Fetch data from the API for jumia
+            fetch(`https://boiling-fjord-00108-52329a44ed31.herokuapp.com/grouped_items/collection2?page=${currentPage_jumia}&limit=${itemsPerPage_jumia}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log("Load More button clicked for Jumia");
+                    console.log("API response: ", data);
+
+                    const brandDataJumia = data; // The API response is an object with brand keys and item arrays as values
+
+                    const brands_jumia = Object.keys(brandDataJumia);
+                    const totalItemsJumia = brands_jumia.reduce((sum, brand) => sum + brandDataJumia[brand].length, 0);
+
+                    const startIndexJumia = currentPage_jumia * itemsPerPage_jumia;
+                    const endIndexJumia = Math.min(startIndexJumia + itemsPerPage_jumia, totalItemsJumia);
+
+                    console.log("Jumia Start Index:", startIndexJumia);
+                    console.log("Jumia End Index:", endIndexJumia);
+
+                    // Populate the table with items from the brand data
+                    populateJumiaTable(brandDataJumia, startIndexJumia, endIndexJumia);
+
+
+                    // Update page index
+                    currentPage_jumia++;
+
+                    isLoading_jumia = false;
+                })
+                .catch((error) => {
+                    console.error(error);
+                    isLoading_jumia = false;
+                });
+        }
+
+        
+
+        // Grouping function
+        function groupBrand(brand) {
+            const brandMapping = {
+                "apple": "Apple",
+                "iphone": "Apple",
+                "ipad": "Apple",
+                "samsung": "Samsung",
+                "tecno": "Tecno",
+                "infinix": "Infinix",
+                "sony": "Sony",
+                "huawei": "Huawei",
+                "google": "Google",
+                "xiaomi": "Xiaomi",
+                "nokia": "Nokia",
+                "htc": "HTC",
+                "oppo": "Oppo",
+                "oneplus": "OnePlus"
+            };
+
+            // Ensure that brand is a valid string
+            if (typeof brand === 'string') {
+                const normalizedBrand = brand.toLowerCase();
+                return brandMapping[normalizedBrand] || "Other";
+            } else {
+                return "Other"; // Handle undefined or non-string values
+            }
+        }
+
+        // Populate the "Jiji" table
+        function populateJijiTable(brandData, startIndex, endIndex) {
+            const jijiTableBody = document.getElementById("jiji_table_body");
+
+            const brands = Object.keys(brandData);
+            brands.sort(); // Sort brands alphabetically
+
+            let count = 0;
+
+            const groupedBrands = {};
+
+            brands.forEach((brand) => {
+                brandData[brand].forEach((item) => {
+                    const groupedBrand = groupBrand(brand);
+                    if (!groupedBrands[groupedBrand]) {
+                        groupedBrands[groupedBrand] = [];
+                    }
+                    groupedBrands[groupedBrand].push(item);
+                });
+            });
+
+            const sortedGroupedBrands = Object.keys(groupedBrands).sort();
+            
+            sortedGroupedBrands.forEach((groupedBrand) => {
+                groupedBrands[groupedBrand].forEach((item) => {
+                    if (count >= startIndex && count < endIndex) {
+                        jijiTableBody.innerHTML += `
+                            <tr>
+                                <td>${groupedBrand}</td>
+                                <td><a href="itemDetails.html?collection=collection1&itemId=${item.id}">${item.name}</a></td>
+                                <td>${item.price}</td>
+                                <td><button onclick="addItemToCompare('${item.id}')">Add to Compare</button></td>
+                            </tr>`;
+                    }
+                    count++;
+                });
+            });
+        }
+
+        // Populate the "Jumia" table
+        function populateJumiaTable(brandDataJumia, startIndexJumia, endIndexJumia) {
+            const jumiaTableBody = document.getElementById("jumia_table_body");
+
+            const brands_jumia = Object.keys(brandDataJumia);
+            brands_jumia.sort(); // Sort brands alphabetically
+
+            let count_jumia = 0;
+
+            const groupedBrands = {};
+
+            brands_jumia.forEach((brand) => {
+                brandDataJumia[brand].forEach((item) => {
+                    const groupedBrand = groupBrand(brand);
+                    if (!groupedBrands[groupedBrand]) {
+                        groupedBrands[groupedBrand] = [];
+                    }
+                    groupedBrands[groupedBrand].push(item);
+                });
+            });
+
+            const sortedGroupedBrands = Object.keys(groupedBrands).sort();
+            
+            sortedGroupedBrands.forEach((groupedBrand) => {
+                groupedBrands[groupedBrand].forEach((item) => {
+                    if (count_jumia >= startIndexJumia && count_jumia < endIndexJumia) {
+                        jumiaTableBody.innerHTML += `
+                            <tr>
+                                <td>${groupedBrand}</td>
+                                <td><a href="itemDetails.html?collection=collection2&itemId=${item.id}">${item.name}</a></td>
+                                <td>${item.price}</td>
+                                <td><button onclick="addItemToCompareJumia('${item.id}')">Add to Compare</button></td>
+                            </tr>`;
+                    }
+                    count_jumia++;
+                });
+            });
+        }
+
+        
+
+
+        //Handles data addition for jiji
+        function addItemToCompare(itemId) {
+            //console.log("Adding item to compare:", itemId);
+            
+            const existingItems = JSON.parse(localStorage.getItem("compareItems")) || [];
+            console.log("Existing items:", existingItems);
+            
+            if (!existingItems.includes(itemId)) {
+                existingItems.push(itemId);
+                localStorage.setItem("compareItems", JSON.stringify(existingItems));
+                console.log("Item added to Compare");
+                alert("Item added to Compare");
+            } else {
+                console.log("Item already added to Compare");
+                alert("Item already added to Compare");
+            }
+        }
+
+        //Handles item addition for jumia
+        function addItemToCompareJumia(itemId) {
+            console.log("Adding item to compare:", itemId);
+            
+            const existingItemsJumia = JSON.parse(localStorage.getItem("compareItemsJumia")) || [];
+            console.log("Existing items:", existingItemsJumia);
+            
+            if (!existingItemsJumia.includes(itemId)) {
+                existingItemsJumia.push(itemId);
+                localStorage.setItem("compareItemsJumia", JSON.stringify(existingItemsJumia));
+                console.log("Item added to Compare");
+                alert("Item added to Compare");
+            } else {
+                console.log("Item already added to Compare");
+                alert("Item already added to Compare");
+            }
+        }
+
+        // Function to group search results by brand
+        function groupSearchResultsByBrand(searchResults) {
+            const groupedResults = {};
+
+            // Loop through the search results
+            searchResults.forEach((item) => {
+                const groupedBrand = groupBrand(item.brand);
+
+                if (!groupedResults[groupedBrand]) {
+                    groupedResults[groupedBrand] = [];
+                }
+
+                groupedResults[groupedBrand].push(item);
+            });
+
+            return groupedResults;
+        }
+
+        // Function to populate the "Jiji" table with search results from 'collection1'
+        function populateJijiTableWithSearchResults(searchResults) {
+            const jijiTableBody = document.getElementById("jiji_table_body");
+
+            // Clear the table body
+            jijiTableBody.innerHTML = "";
+
+            console.log("Search Results Jiji:", searchResults);
+
+            // Check if 'collection1' exists in searchResults
+            if (searchResults.hasOwnProperty('collection1')) {
+                const resultsArray = searchResults['collection1'];
+                console.log("Collection1 Items:", resultsArray);
+
+                if (resultsArray.length === 0) {
+                    // Display a message if there are no items in 'collection1'
+                    console.log("No results found for collection1");
+
+                    jijiTableBody.innerHTML = `
+                        <tr>
+                            <td colspan="4">No results found for this item in this collection. Check your search term and try again.</td>
+                        </tr>`;
+                } else {
+                    // Loop through the search results and populate the table
+                    resultsArray.forEach((item) => {
+                        jijiTableBody.innerHTML += `
+                            <tr>
+                                <td>From Search</td>
+                                <td><a href="itemDetails.html?collection=collection1&itemId=${item._id}">${item["Item Name"]}</a></td>
+                                <td>${item["Price"]}</td>
+                                <td><button onclick="addItemToCompare('${item._id}')">Add to Compare</button></td>
+                            </tr>`;
+                    });
+                }
+            }
+        }
+
+
+
+        // Function to populate the "Jumia" table with search results from 'collection2'
+        function populateJumiaTableWithSearchResults(searchResults) {
+            const jumiaTableBody = document.getElementById("jumia_table_body");
+
+            // Clear the table body
+            jumiaTableBody.innerHTML = "";
+
+            // Check if 'collection2' exists in searchResults
+            if (searchResults.hasOwnProperty('collection2')) {
+                const resultsArray = searchResults['collection2'];
+
+                if (resultsArray.length === 0) {
+                    // Display a message if there are no items in 'collection1'
+                    jumiaTableBody.innerHTML = `
+                        <tr>
+                            <td colspan="4">No results found for this item in this collection. Check your search term and try again.</td>
+                        </tr>`;
+                } else {
+                    // Loop through the search results and populate the table
+                    resultsArray.forEach((item) => {
+                        jumiaTableBody.innerHTML += `
+                            <tr>
+                                <td>From Search</td>
+                                <td><a href="itemDetails.html?collection=collection2&itemId=${item._id}">${item["name"]}</a></td>
+                                <td>${item["Price"]}</td>
+                                <td><button onclick="addItemToCompare('${item._id}')">Add to Compare</button></td>
+                            </tr>`;
+                    });
+                }
+            }
+        }
+
+        // Function to handle search results for collection2
+        function handleJumiaSearchResults(searchQuery) {
+            const searchEndpoint = `https://boiling-fjord-00108-52329a44ed31.herokuapp.com/search?query=${encodeURIComponent(searchQuery)}`;
+
+            console.log("Searching for collection2:", searchQuery);
+            console.log("Search Endpoint:", searchEndpoint);
+
+            // Fetch data from the search API
+            fetch(searchEndpoint)
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log("Search results for collection2:", data);
+
+                    // Call the function to populate the "collection2" table with search results
+                    populateJumiaTableWithSearchResults(data);
+
+                    // You can also add additional logic here if needed.
+                })
+                .catch((error) => {
+                    console.error("Error fetching search results for collection2:", error);
+                });
+        }
+
+
+        // Function to handle search results
+        function handleJijiSearchResults(searchQuery) {
+            const searchEndpoint = `https://boiling-fjord-00108-52329a44ed31.herokuapp.com/search?query=${encodeURIComponent(searchQuery)}`;
+
+            console.log("Searching for:", searchQuery);
+            console.log("Search Endpoint:", searchEndpoint);
+
+            // Fetch data from the search API
+            fetch(searchEndpoint)
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log("Search results:", data);
+
+                    // Call the function to populate the "Jiji" table with search results
+                    populateJijiTableWithSearchResults(data);
+
+                    // You can also add additional logic here if needed.
+                })
+                .catch((error) => {
+                    console.error("Error fetching search results:", error);
+                });
+        }
+
+        // Add a click event listener to the Search button
+        document.getElementById("searchButton").addEventListener("click", function() {
+            const searchQuery = document.getElementById("searchInput").value;
+            handleJijiSearchResults(searchQuery);
+            handleJumiaSearchResults(searchQuery);
+        });
+
+
+        // Add a click event listener to the Load More button
+        document.getElementById("loadMoreBtn").addEventListener("click", function() {
+            loadMoreItems();
+            loadMoreItemsJumia();
+        });
+
+        // Initial load of data
+        loadMoreItems();
+        loadMoreItemsJumia();
+
+    </script>
+
+
+    <!-- <script src="assets/js/productfetch.js"></script> -->
+</body>
+
+</html>
