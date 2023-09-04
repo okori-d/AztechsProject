@@ -21,81 +21,106 @@
     <link rel="stylesheet" href="assets/css/owl.css">
 
     <style>
-        img {
-            width: 100px;
+        /* Style the card container */
+        .card-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+
+        /* Style the card */
+        .card {
+            flex: 1;
+            padding: 20px;
+        }
+
+        /* Style the card image */
+        .card img {
+            width: 100%; /* Make the image cover the entire card */
+            max-width: 300px; /* Set a maximum width for the image */
+            border-radius: 10px; /* Add rounded corners to the image */
+        }
+
+        /* Style the card title */
+        .card h1 {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+
+        /* Style the card price and set its color to green */
+        .card p.price {
+            font-size: 18px;
+            color: green;
+        }
+
+        /* Style the card description and set its color to black */
+        .card p.description {
+            font-size: 16px;
         }
     </style>
 
 </head>
 
 <body>
-    <div>
-        <h1 id="item-name"></h1>
-        <p id="item-price"></p>
-        <p id="item-description"></p>
-        <img id="item-image" src="" alt="Product">
-        <!-- Add more HTML elements for other item details -->
+    <div class="card-container">
+        <!-- Card for image, name, and price -->
+        <div class="card">
+            <img id="item-image" src="" alt="Product image">
+            <h1 id="item-name"></h1>
+            <p class="price" id="item-price"></p>
+        </div>
+
+        <!-- Card for description -->
+        <div class="card">
+            <p class="description" id="item-description" style="color: black !important;"></p>
+        </div>
     </div>
 
     <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const itemId = urlParams.get("itemId");
-        const collection = urlParams.get("collection");
-
-        const apiUrl = `https://boiling-fjord-00108-52329a44ed31.herokuapp.com/item/${collection}/${itemId}`;
-
-        if (collection === "collection1") {
-            fetch(apiUrl)
-            .then((response) => response.json())
-            .then((itemData) => {
-                console.log("API response:", itemData);
-
-                // Populate item details on the page
-                document.getElementById("item-name").textContent = itemData.name;
-                document.getElementById("item-price").textContent = itemData.price;
-
-                const specificationsDiv = document.getElementById("item-specifications");
-                for (const [specificationType, detail] of Object.entries(itemData.specifications)) {
-                    const formattedSpecification = `${specificationType} - ${detail}<br>`;
-                    specificationsDiv.insertAdjacentHTML('beforeend', formattedSpecification);
-                }
-
-                // Set the item image
-                const itemImage = document.getElementById("item-image");
-                itemImage.src = itemData.Image;
-                itemImage.alt = itemData.name;
-
-                // Add more code to populate other item details on the page
-            })
-            .catch((error) => {
-                console.error("Error fetching item details:", error);
-            });
-        } else {
-            // TODO: Handle display for collection2 (jumia)
+        // Function to format the description data
+        function formatDescription(descriptionData) {
+            const formattedData = descriptionData.split('\n').map(line => `<p>${line}</p>`).join('');
+            return formattedData;
         }
 
-        /*
-        fetch(apiUrl)
-            .then((response) => response.json())
+        // Function to fetch and display item details
+        function displayItemDetails() {
+            // Get the item ID from the query parameter in the URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const itemId = urlParams.get("itemId");
+            const collection = urlParams.get("collection"); // Add this line to get the collection parameter
+
+            // Check if the itemId is valid
+            if (!itemId) {
+                console.error("Invalid item ID");
+                return;
+            }
+
+            // Make an HTTP GET request to fetch the item details based on the collection
+            fetch(`https://boiling-fjord-00108-52329a44ed31.herokuapp.com/item/${collection}/${itemId}`)
+            .then((response) => {
+                if (response.ok) {
+                return response.json(); // Convert the response to an object
+                } else {
+                throw new Error("Error: " + response.status);
+                }
+            })
             .then((itemData) => {
-                console.log("API response:", itemData);
-
-                // Populate item details on the page
-                document.getElementById("item-name").textContent = itemData.name;
-                document.getElementById("item-price").textContent = itemData.price;
-                document.getElementById("item-description").textContent = itemData.Description;
-
-                // Set the item image
-                const itemImage = document.getElementById("item-image");
-                itemImage.src = itemData.Image;
-                itemImage.alt = itemData.name;
-
-                // Add more code to populate other item details on the page
+                // Populate the item details
+                document.getElementById("item-image").src = itemData.Image;
+                document.getElementById("item-name").textContent = itemData["Item Name"];
+                document.getElementById("item-price").textContent = itemData.Price;
+                const formattedDescription = formatDescription(itemData.Description);
+                document.getElementById("item-description").innerHTML = `<p style="color: black;">${formattedDescription}</p>`;
             })
             .catch((error) => {
-                console.error("Error fetching item details:", error);
+                console.log(error);
             });
-            */
+        }
+
+        // Call the function to display item details when the page loads
+        window.onload = displayItemDetails;
     </script>
 </body>
 </html>

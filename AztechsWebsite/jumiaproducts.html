@@ -10,7 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 
-    <title>Jiji Products</title>
+    <title>Products</title>
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -26,49 +26,9 @@
         }
     </style>
 
-    <script>
-        var currentSearchTerm = ""; // Initialize the search term variable
-
-        // Initialize radio buttons and search term on page load
-        window.addEventListener('load', function () {
-            const radioAllProducts = document.getElementById('all-products-compared-radio');
-            const radioJiji = document.getElementById('jiji-radio');
-            const radioJumia = document.getElementById('jumia-radio');
-
-            // Set event listeners for radio buttons
-            radioAllProducts.addEventListener('click', handleRadioChange);
-            radioJiji.addEventListener('click', handleRadioChange);
-            radioJumia.addEventListener('click', handleRadioChange);
-
-            // Set "Jiji" radio button as default and trigger initial search
-            radioJumia.checked = true;
-            handleRadioChange();
-        });
-
-        // Function to handle radio button change
-        function handleRadioChange() {
-            const selectedRadio = document.querySelector('input[name="website"]:checked').value;
-            const newSearchTerm = document.getElementById("searchInput").value.toLowerCase();
-
-            if (selectedRadio === "all-products-compared") {
-                // Handle "All Products" selection
-                window.location.href = `products.html?search=${encodeURIComponent(newSearchTerm)}`;
-            } else if (selectedRadio === "jiji") {
-                // Handle "Jiji" selection
-                window.location.href = `jijiProducts.html?search=${encodeURIComponent(newSearchTerm)}`;
-            } else if (selectedRadio === "jumia") {
-                // Handle "Jumia" selection
-                currentSearchTerm = newSearchTerm;
-                searchProducts();
-            }
-        }
-
-        // Rest of your existing JavaScript code...
-    </script>
 </head>
 
 <body>
-
     <!-- ***** Preloader Start ***** -->
     <div id="preloader">
         <div class="jumper">
@@ -118,7 +78,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="text-content">
-                        <h2 style="color: rgb(255, 153, 0);">Jumia Products Collection</h2>
+                        <h2 style="color: rgb(255, 123, 0);">Jumia Collection</h2>
                     </div>
                 </div>
             </div>
@@ -132,8 +92,12 @@
         <label for="all-products-compared-radio">All Products</label>
         <input type="radio" name="website" id="jiji-radio" value="jiji">
         <label for="jiji-radio">Jiji</label>
-        <input type="radio" name="website" id="jumia-radio" value="jumia">
+        <input type="radio" name="website" id="jumia-radio" value="jumia" checked>
         <label for="jumia-radio">Jumia</label>
+
+        <div class="container">
+            <p style="color: black"> -> Click item IDs to view details about the item</p>
+        </div>
     </div>
 
     <!-- Table within page -->
@@ -192,27 +156,11 @@
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
 
-    <script src="assets/js/productfetch.js"></script>
+    <script src="assets/js/jumiaproductfetch.js"></script>
 
     <script>
-        // Existing JavaScript code for fetching and displaying products...
-        var currentSearchTerm = ""; // Initialize the search term variable
-
-        document.getElementById('jiji-radio').addEventListener('click', function () {
-            const newSearchTerm = document.getElementById("searchInput").value.toLowerCase();
-            window.location.href = `jijiProducts.html?search=${encodeURIComponent(newSearchTerm)}`;
-        });
-
-
-        document.getElementById('jumia-radio').addEventListener('click', function () {
-            const newSearchTerm = document.getElementById("searchInput").value.toLowerCase();
-            window.location.href = `jumiaproducts.html?search=${encodeURIComponent(newSearchTerm)}`;
-        });
-
         function searchProducts() {
-            var searchQuery = document.getElementById("searchInput").value.toLowerCase();
-            currentSearchTerm = searchQuery; // Store the search term in the variable
-
+            var searchQuery = document.getElementById("searchInput").value;
 
             // Make an HTTP GET request to the search API endpoint
             fetch(`https://boiling-fjord-00108-52329a44ed31.herokuapp.com/search?query=${encodeURIComponent(searchQuery)}`)
@@ -224,23 +172,17 @@
                     }
                 })
                 .then((responseData) => {
-                    const objectData = responseData.collection1; // Access the desired collection
+                    const objectData = responseData.collection2; // Access the desired collection 
 
                     let tableData = "";
                     objectData.forEach((values) => {
-                        // Convert the item name and ID to lowercase for case-insensitive search
-                        const itemName = values["Item Name"].toLowerCase();
-                        const itemId = values._id.toLowerCase();
-                        if (itemName.includes(searchQuery) || itemId.includes(searchQuery)) {
-                            tableData += `<tr>
+                        tableData += `<tr>
                             <td><a href="item.html?id=${values._id}">${values._id}</a></td>
-                            <td>${values["Item Name"]}</td> <!-- Access "Item Name" using square brackets notation -->
-                            <td>${values.Price}</td>
-                            <td><img src="${values.Image}" alt="${values["Item Name"]}"/></td>
+                            <td>${values.name}</td> <!-- Access "Item Name" using square brackets notation -->
+                            <td>${values.price}</td>
+                            <td><img src="${values.images}" alt="${values.name}"/></td>
                             <td><button onclick="addItemToCompare('${values._id}')">Add to Compare</button></td>
-                            </tr>`;
-                        }
-                        
+                        </tr>`;
                     });
 
                     document.getElementById("table_body").innerHTML = tableData;
@@ -262,6 +204,22 @@
             }
         }
     </script>
+
+    <!-- Collection page switching logic for websites -->
+    <script>
+        document.getElementById('all-products-compared-radio').addEventListener('click', function () {
+            window.location.href = 'products.html';
+        });
+
+        document.getElementById('jiji-radio').addEventListener('click', function () {
+            window.location.href = 'jijiProducts.html';
+        });
+
+        document.getElementById('jumia-radio').addEventListener('click', function () {
+            window.location.href = 'jumiaproducts.html';
+        });
+    </script>
+
 </body>
 
 </html>
