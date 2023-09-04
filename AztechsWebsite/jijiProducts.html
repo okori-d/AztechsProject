@@ -151,7 +151,6 @@
                 <tr>
                     <th scope="col">Item</th>
                     <th scope="col">Price</th>
-                    <th scope="col">Image</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -231,12 +230,19 @@
                         const itemName = values["Item Name"].toLowerCase();
                         const itemId = values._id.toLowerCase();
                         if (itemName.includes(searchQuery) || itemId.includes(searchQuery)) {
-                            tableData += `<tr>
-                            <td><a href="itemDetails.html?collection=collection1&itemId=${values._id}">${values["Item Name"]}</a></td> 
-                            <td>${values.Price}</td>
-                            <td><img src="${values.Image}" alt="${values["Item Name"]}"/></td>
-                            <td><button onclick="addItemToCompare('${values._id}')">Add to Compare</button></td>
-                            </tr>`;
+                            const cardHtml = `
+                                <div class="card" style="width: 18rem;">
+                                    <img src="${values.Image}" class="card-img-top" alt="${values["Item Name"]}">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><a href="itemDetails.html?collection=collection1&itemId=${values._id}">${values["Item Name"]}</a></h5>
+                                    </div>
+                                </div>`;
+                            
+                                tableData += `<tr>
+                                    <td>${cardHtml}</td> 
+                                    <td>${values.Price}</td>
+                                    <td><button onclick="addItemToCompare('${values._id}')">Add to Compare</button></td>
+                                </tr>`;
                         }
                         
                     });

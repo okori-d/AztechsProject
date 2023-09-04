@@ -113,10 +113,8 @@
         <table class="table table-bordered">
             <thead class="table-dark">
                 <tr>
-                    <th scope="col">Item_Id</th>
-                    <th scope="col">Item Name</th>
+                    <th scope="col">Item</th>
                     <th scope="col">Price</th>
-                    <th scope="col">Image</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -173,16 +171,28 @@
                 })
                 .then((responseData) => {
                     const objectData = responseData.collection2; // Access the desired collection 
+                    
 
                     let tableData = "";
                     objectData.forEach((values) => {
-                        tableData += `<tr>
-                            <td><a href="item.html?id=${values._id}">${values._id}</a></td>
-                            <td>${values.name}</td> <!-- Access "Item Name" using square brackets notation -->
-                            <td>${values.price}</td>
-                            <td><img src="${values.images}" alt="${values.name}"/></td>
-                            <td><button onclick="addItemToCompare('${values._id}')">Add to Compare</button></td>
-                        </tr>`;
+                        const itemName = values["name"].toLowerCase();
+                        const itemId = values._id.toLowerCase();
+
+                        if (itemName.includes(searchQuery) || itemId.includes(searchQuery)) {
+                                const cardHtml = `
+                                    <div class="card" style="width: 18rem;">
+                                        <img src="${values.images}" class="card-img-top" alt="${values["name"]}">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><a href="itemDetails.html?collection=collection2&itemId=${values._id}">${values["name"]}</a></h5>
+                                        </div>
+                                    </div>`;
+                                
+                                    tableData += `<tr>
+                                        <td>${cardHtml}</td> 
+                                        <td>${values.price}</td>
+                                        <td><button onclick="addItemToCompareJumia('${values._id}')">Add to Compare</button></td>
+                                    </tr>`;
+                        }
                     });
 
                     document.getElementById("table_body").innerHTML = tableData;
@@ -192,12 +202,14 @@
                 });
         }
 
-        function addItemToCompare(itemId) {
-            // Check if the item ID already exists in localStorage
-            const existingItems = JSON.parse(localStorage.getItem("compareItems")) || [];
-            if (!existingItems.includes(itemId)) {
-                existingItems.push(itemId);
-                localStorage.setItem("compareItems", JSON.stringify(existingItems));
+        function addItemToCompareJumia(itemId) {
+            
+            const existingItemsJumia = JSON.parse(localStorage.getItem("compareItemsJumia")) || [];
+            
+            if (!existingItemsJumia.includes(itemId)) {
+                existingItemsJumia.push(itemId);
+                localStorage.setItem("compareItemsJumia", JSON.stringify(existingItemsJumia));
+                console.log("Item added to Compare");
                 alert("Item added to Compare");
             } else {
                 alert("Item already added to Compare");

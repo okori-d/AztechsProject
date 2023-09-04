@@ -406,10 +406,10 @@
 
         //Handles item addition for jumia
         function addItemToCompareJumia(itemId) {
-            console.log("Adding item to compare:", itemId);
+            //console.log("Adding item to compare:", itemId);
             
             const existingItemsJumia = JSON.parse(localStorage.getItem("compareItemsJumia")) || [];
-            console.log("Existing items:", existingItemsJumia);
+            //console.log("Existing items:", existingItemsJumia);
             
             if (!existingItemsJumia.includes(itemId)) {
                 existingItemsJumia.push(itemId);
