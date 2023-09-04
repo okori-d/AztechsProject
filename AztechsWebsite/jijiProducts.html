@@ -149,8 +149,7 @@
         <table class="table table-bordered">
             <thead class="table-dark">
                 <tr>
-                    <th scope="col">Item_Id</th>
-                    <th scope="col">Item Name</th>
+                    <th scope="col">Item</th>
                     <th scope="col">Price</th>
                     <th scope="col">Image</th>
                     <th scope="col"></th>
@@ -233,8 +232,7 @@
                         const itemId = values._id.toLowerCase();
                         if (itemName.includes(searchQuery) || itemId.includes(searchQuery)) {
                             tableData += `<tr>
-                            <td><a href="item.html?id=${values._id}">${values._id}</a></td>
-                            <td>${values["Item Name"]}</td> <!-- Access "Item Name" using square brackets notation -->
+                            <td><a href="itemDetails.html?collection=collection1&itemId=${values._id}">${values["Item Name"]}</a></td> 
                             <td>${values.Price}</td>
                             <td><img src="${values.Image}" alt="${values["Item Name"]}"/></td>
                             <td><button onclick="addItemToCompare('${values._id}')">Add to Compare</button></td>

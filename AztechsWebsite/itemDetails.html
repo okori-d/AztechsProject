@@ -58,24 +58,40 @@
         .card p.description {
             font-size: 16px;
         }
+
+        .card {
+            flex: 1;
+            padding: 20px;
+            background-color: #f5f5f5; /* Use a light gray background color */
+        }
     </style>
 
 </head>
 
 <body>
-    <div class="card-container">
-        <!-- Card for image, name, and price -->
-        <div class="card">
-            <img id="item-image" src="" alt="Product image">
-            <h1 id="item-name"></h1>
-            <p class="price" id="item-price"></p>
-        </div>
-
-        <!-- Card for description -->
-        <div class="card">
-            <p class="description" id="item-description" style="color: black !important;"></p>
-        </div>
+    <!-- Heading section -->
+    <div class="container" style="padding: 20px;">
+        <h1 id="page-heading"></h1>
     </div>
+
+    <div class="container" style="padding: 20px;"> <!-- Add padding to the container -->
+        <div class="card-container">
+            <!-- Card for image, name, and price -->
+            <div class="card">
+                <img id="item-image" src="" alt="Product image">
+                <h1 id="item-name"></h1>
+                <p class="price" id="item-price"></p>
+                <p class="rating" id="item-rating" style="color: black;"></p>
+            </div>
+
+            <!-- Card for description -->
+            <div class="card">
+                <p class="description" id="item-description" style="color: black !important;"></p>
+                <p class="specifications" id="item-specifications"></p>
+            </div>
+        </div>
+    </div> <!-- Close the padding container -->
+
 
     <script>
         // Function to format the description data
@@ -107,12 +123,34 @@
                 }
             })
             .then((itemData) => {
-                // Populate the item details
-                document.getElementById("item-image").src = itemData.Image;
-                document.getElementById("item-name").textContent = itemData["Item Name"];
-                document.getElementById("item-price").textContent = itemData.Price;
-                const formattedDescription = formatDescription(itemData.Description);
-                document.getElementById("item-description").innerHTML = `<p style="color: black;">${formattedDescription}</p>`;
+                if(collection === "collection1") {
+                    // Populate the item details for jiji
+                    document.getElementById("item-image").src = itemData.Image;
+                    document.getElementById("item-name").textContent = itemData["Item Name"];
+                    document.getElementById("item-price").textContent = itemData.Price;
+                    const formattedDescription = formatDescription(itemData.Description);
+                    document.getElementById("item-description").innerHTML = `
+                        <div style="color: black;">
+                            <h2 style="color: green">DESCRIPTION AND FEATURES</h2>
+                            ${formattedDescription}
+                        </div>`;
+                } else if (collection === "collection2") {
+                    // Display data in the format for collection2
+                    document.getElementById("item-image").src = itemData.images[0];
+                    document.getElementById("item-name").textContent = itemData.name;
+                    document.getElementById("item-price").textContent = `Price: ${itemData.price}`;
+                    document.getElementById("item-rating").textContent = `Rating: ${itemData.rating}`;
+                    document.getElementById("item-description").innerHTML = `
+                        <div>
+                            <h2 style="color: orange;">KEY FEATURES</h2>
+                            ${itemData.key_features}
+                            <h2 style="color: orange;">SPECIFICATIONS</h2>
+                            ${itemData.specifications}
+                        </div>`;
+                } else {
+                    console.error("Invalid collection");
+                }
+                
             })
             .catch((error) => {
                 console.log(error);
