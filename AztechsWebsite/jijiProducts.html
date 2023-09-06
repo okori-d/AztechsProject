@@ -226,6 +226,7 @@
 
                     let tableData = "";
                     objectData.forEach((values) => {
+                        console.log("Jiji item:", values);
                         // Convert the item name and ID to lowercase for case-insensitive search
                         const itemName = values["Item Name"].toLowerCase();
                         const itemId = values._id.toLowerCase();

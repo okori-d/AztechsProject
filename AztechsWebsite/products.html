@@ -25,6 +25,12 @@
         img {
             width: 100px;
         }
+
+        .card {
+            flex: 1;
+            padding: 20px;
+            background-color: #f5f5f5; /* Use a light gray background color */
+        }
     </style>
 
 </head>
@@ -121,7 +127,7 @@
                             <thead class="table-light">
                                 <tr>
                                     <th scope="col">Brand</th>
-                                    <th scope="col">Item Name</th>
+                                    <th scope="col">Item</th>
                                     <th scope="col">Price</th>
                                 </tr>
                             </thead>
@@ -204,7 +210,6 @@
             fetch(`https://boiling-fjord-00108-52329a44ed31.herokuapp.com/grouped_items/collection1?page=${currentPage}&limit=${itemsPerPage}`)
                 .then((response) => response.json())
                 .then((data) => {
-                    console.log("API response: ", data);
 
                     const brandData = data; // The API response is an object with brand keys and item arrays as values
 
@@ -246,8 +251,6 @@
             fetch(`https://boiling-fjord-00108-52329a44ed31.herokuapp.com/grouped_items/collection2?page=${currentPage_jumia}&limit=${itemsPerPage_jumia}`)
                 .then((response) => response.json())
                 .then((data) => {
-                    console.log("Load More button clicked for Jumia");
-                    console.log("API response: ", data);
 
                     const brandDataJumia = data; // The API response is an object with brand keys and item arrays as values
 
@@ -331,18 +334,26 @@
             sortedGroupedBrands.forEach((groupedBrand) => {
                 groupedBrands[groupedBrand].forEach((item) => {
                     if (count >= startIndex && count < endIndex) {
-                        jijiTableBody.innerHTML += `
-                            <tr>
-                                <td>${groupedBrand}</td>
-                                <td><a href="itemDetails.html?collection=collection1&itemId=${item.id}">${item.name}</a></td>
-                                <td>${item.price}</td>
-                                <td><button onclick="addItemToCompare('${item.id}')">Add to Compare</button></td>
-                            </tr>`;
+                        const jijiTableCard = `
+                            <div class="card" style="width: 18rem;">
+                                <img src="${item.image}" alt="${item["name"]}" class="card-img-top">
+                                <div class="card-body">
+                                    <h5 class="card-title"><a href="itemDetails.html?collection=collection1&itemId=${item.id}">${item["name"]}</h5>
+                                </div>
+                            </div>`;
+                        jijiTableBody.innerHTML += `<tr>
+                            <td>${groupedBrand}</td>
+                            <td>${jijiTableCard}</td>
+                            <td>${item.price}</td>
+                            <td><button onclick="addItemToCompare('${item.id}')">Add to Compare</button></td>
+                        </tr>`;
                     }
                     count++;
                 });
             });
         }
+
+        
 
         // Populate the "Jumia" table
         function populateJumiaTable(brandDataJumia, startIndexJumia, endIndexJumia) {
@@ -370,14 +381,21 @@
             sortedGroupedBrands.forEach((groupedBrand) => {
                 groupedBrands[groupedBrand].forEach((item) => {
                     if (count_jumia >= startIndexJumia && count_jumia < endIndexJumia) {
-                        jumiaTableBody.innerHTML += `
-                            <tr>
-                                <td>${groupedBrand}</td>
-                                <td><a href="itemDetails.html?collection=collection2&itemId=${item.id}">${item.name}</a></td>
-                                <td>${item.price}</td>
-                                <td><button onclick="addItemToCompareJumia('${item.id}')">Add to Compare</button></td>
-                            </tr>`;
+                        const jumiaTableCard = `
+                            <div class="card" style="width: 18rem;">
+                                <img src="${item.images}" alt="${item["name"]}" class="card-img-top">
+                                <div class="card-body">
+                                    <h5 class="card-title"><a href="itemDetails.html?collection=collection2&itemId=${item.id}">${item["name"]}</h5>
+                                </div>
+                            </div>`;
+                        jumiaTableBody.innerHTML += `<tr>
+                            <td>${groupedBrand}</td>
+                            <td>${jumiaTableCard}</td>
+                            <td>${item.price}</td>
+                            <td><button onclick="addItemToCompare('${item.id}')">Add to Compare</button></td>
+                        </tr>`;
                     }
+
                     count_jumia++;
                 });
             });
@@ -386,7 +404,7 @@
         
 
 
-        //Handles data addition for jiji
+        //Handles compare item addition for jiji
         function addItemToCompare(itemId) {
             //console.log("Adding item to compare:", itemId);
             
@@ -404,7 +422,7 @@
             }
         }
 
-        //Handles item addition for jumia
+        //Handles compare item addition for jumia
         function addItemToCompareJumia(itemId) {
             //console.log("Adding item to compare:", itemId);
             
@@ -441,6 +459,7 @@
         }
 
         // Function to populate the "Jiji" table with search results from 'collection1'
+        /*
         function populateJijiTableWithSearchResults(searchResults) {
             const jijiTableBody = document.getElementById("jiji_table_body");
 
@@ -472,6 +491,44 @@
                                 <td>${item["Price"]}</td>
                                 <td><button onclick="addItemToCompare('${item._id}')">Add to Compare</button></td>
                             </tr>`;
+                    });
+                }
+            }
+        }
+        */
+
+        // Function to populate the "Jiji" cards with search results from 'collection1'
+        function populateJijiTableWithSearchResults(searchResults) {
+            const jijiTableBody = document.getElementById("jiji_table_body");
+
+            // Clear the table body
+            jijiTableBody.innerHTML = "";
+
+            // Check if 'collection1' exists in searchResults
+            if (searchResults.hasOwnProperty('collection1')) {
+                const resultsArray = searchResults['collection1'];
+                if (resultsArray.length === 0) {
+                    // Display a message if there are no items in 'collection1'
+                    jijiTableBody.innerHTML = `
+                        <tr>
+                            <td colspan="4">No results found for this item in this collection. Check your search term and try again.</td>
+                        </tr>`;
+                } else {
+                    // Loop through the search results and populate the card container
+                    resultsArray.forEach((item) => {
+                        const jijiTableCard = `
+                            <div class="card">
+                                <img src="${item.Image}" alt="${item["Item Name"]}" class="card-img-top">
+                                <div class="card-body">
+                                    <h5 class="card-title">${item["Item Name"]}</h5>
+                                </div>
+                            </div>`;
+                        jijiTableBody.innerHTML += `<tr>
+                            <td>From Search</td>
+                            <td>${jijiTableCard}</td>
+                            <td>${item.Price}</td>
+                            <td><button onclick="addItemToCompare('${item._id}')">Add to Compare</button></td>
+                        </tr>`;
                     });
                 }
             }
