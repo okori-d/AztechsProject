@@ -213,7 +213,7 @@
 
 
             // Make an HTTP GET request to the search API endpoint
-            fetch(`https://boiling-fjord-00108-52329a44ed31.herokuapp.com/search?query=${encodeURIComponent(searchQuery)}`)
+            fetch(`https://boiling-fjord-00108-52329a44ed31.herokuapp.com/search_products?query=${encodeURIComponent(searchQuery)}`)
                 .then((response) => {
                     if (response.ok) {
                         return response.json(); // Convert the response to an object
@@ -222,26 +222,26 @@
                     }
                 })
                 .then((responseData) => {
-                    const objectData = responseData.collection1; // Access the desired collection
+                    const objectData = responseData.collection3; // Access the desired collection
 
                     let tableData = "";
                     objectData.forEach((values) => {
                         console.log("Jiji item:", values);
                         // Convert the item name and ID to lowercase for case-insensitive search
-                        const itemName = values["Item Name"].toLowerCase();
+                        const itemName = values["name"].toLowerCase();
                         const itemId = values._id.toLowerCase();
                         if (itemName.includes(searchQuery) || itemId.includes(searchQuery)) {
                             const cardHtml = `
                                 <div class="card" style="width: 18rem;">
-                                    <img src="${values.Image}" class="card-img-top" alt="${values["Item Name"]}">
+                                    <img src="${values.image}" class="card-img-top" alt="${values["name"]}">
                                     <div class="card-body">
-                                        <h5 class="card-title"><a href="itemDetails.html?collection=collection1&itemId=${values._id}">${values["Item Name"]}</a></h5>
+                                        <h5 class="card-title"><a href="itemDetails.html?collection=collection3&itemId=${values._id}">${values["name"]}</a></h5>
                                     </div>
                                 </div>`;
                             
                                 tableData += `<tr>
                                     <td>${cardHtml}</td> 
-                                    <td>${values.Price}</td>
+                                    <td>${values.price}</td>
                                     <td><button onclick="addItemToCompare('${values._id}')">Add to Compare</button></td>
                                 </tr>`;
                         }

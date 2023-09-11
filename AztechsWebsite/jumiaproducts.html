@@ -161,7 +161,7 @@
             var searchQuery = document.getElementById("searchInput").value;
 
             // Make an HTTP GET request to the search API endpoint
-            fetch(`https://boiling-fjord-00108-52329a44ed31.herokuapp.com/search?query=${encodeURIComponent(searchQuery)}`)
+            fetch(`https://boiling-fjord-00108-52329a44ed31.herokuapp.com/search_products?query=${encodeURIComponent(searchQuery)}`)
                 .then((response) => {
                     if (response.ok) {
                         return response.json(); // Convert the response to an object
@@ -170,7 +170,7 @@
                     }
                 })
                 .then((responseData) => {
-                    const objectData = responseData.collection2; // Access the desired collection 
+                    const objectData = responseData.collection4; // Access the desired collection 
                     
 
                     let tableData = "";
@@ -183,7 +183,7 @@
                                     <div class="card" style="width: 18rem;">
                                         <img src="${values.images}" class="card-img-top" alt="${values["name"]}">
                                         <div class="card-body">
-                                            <h5 class="card-title"><a href="itemDetails.html?collection=collection2&itemId=${values._id}">${values["name"]}</a></h5>
+                                            <h5 class="card-title"><a href="itemDetails.html?collection=collection4&itemId=${values._id}">${values["name"]}</a></h5>
                                         </div>
                                     </div>`;
                                 

@@ -207,7 +207,7 @@
             isLoading = true;
 
             // Fetch data from the API
-            fetch(`https://boiling-fjord-00108-52329a44ed31.herokuapp.com/grouped_items/collection1?page=${currentPage}&limit=${itemsPerPage}`)
+            fetch(`https://boiling-fjord-00108-52329a44ed31.herokuapp.com/grouped_items/collection3?page=${currentPage}&limit=${itemsPerPage}`)
                 .then((response) => response.json())
                 .then((data) => {
 
@@ -248,7 +248,7 @@
             isLoading_jumia = true;
 
             // Fetch data from the API for jumia
-            fetch(`https://boiling-fjord-00108-52329a44ed31.herokuapp.com/grouped_items/collection2?page=${currentPage_jumia}&limit=${itemsPerPage_jumia}`)
+            fetch(`https://boiling-fjord-00108-52329a44ed31.herokuapp.com/grouped_items/collection4?page=${currentPage_jumia}&limit=${itemsPerPage_jumia}`)
                 .then((response) => response.json())
                 .then((data) => {
 
@@ -338,7 +338,7 @@
                             <div class="card" style="width: 18rem;">
                                 <img src="${item.image}" alt="${item["name"]}" class="card-img-top">
                                 <div class="card-body">
-                                    <h5 class="card-title"><a href="itemDetails.html?collection=collection1&itemId=${item.id}">${item["name"]}</h5>
+                                    <h5 class="card-title"><a href="itemDetails.html?collection=collection3&itemId=${item.id}">${item["name"]}</h5>
                                 </div>
                             </div>`;
                         jijiTableBody.innerHTML += `<tr>
@@ -385,14 +385,14 @@
                             <div class="card" style="width: 18rem;">
                                 <img src="${item.images}" alt="${item["name"]}" class="card-img-top">
                                 <div class="card-body">
-                                    <h5 class="card-title"><a href="itemDetails.html?collection=collection2&itemId=${item.id}">${item["name"]}</h5>
+                                    <h5 class="card-title"><a href="itemDetails.html?collection=collection4&itemId=${item.id}">${item["name"]}</h5>
                                 </div>
                             </div>`;
                         jumiaTableBody.innerHTML += `<tr>
                             <td>${groupedBrand}</td>
                             <td>${jumiaTableCard}</td>
                             <td>${item.price}</td>
-                            <td><button onclick="addItemToCompare('${item.id}')">Add to Compare</button></td>
+                            <td><button onclick="addItemToCompareJumia('${item.id}')">Add to Compare</button></td>
                         </tr>`;
                     }
 
@@ -406,7 +406,7 @@
 
         //Handles compare item addition for jiji
         function addItemToCompare(itemId) {
-            //console.log("Adding item to compare:", itemId);
+            console.log("Adding item to compare:", itemId);
             
             const existingItems = JSON.parse(localStorage.getItem("compareItems")) || [];
             console.log("Existing items:", existingItems);
@@ -424,10 +424,10 @@
 
         //Handles compare item addition for jumia
         function addItemToCompareJumia(itemId) {
-            //console.log("Adding item to compare:", itemId);
+            console.log("Adding item to compare:", itemId);
             
             const existingItemsJumia = JSON.parse(localStorage.getItem("compareItemsJumia")) || [];
-            //console.log("Existing items:", existingItemsJumia);
+            console.log("Existing items:", existingItemsJumia);
             
             if (!existingItemsJumia.includes(itemId)) {
                 existingItemsJumia.push(itemId);
@@ -458,57 +458,18 @@
             return groupedResults;
         }
 
-        // Function to populate the "Jiji" table with search results from 'collection1'
-        /*
+        // Function to populate the "Jiji" cards with search results from 'collection3'
         function populateJijiTableWithSearchResults(searchResults) {
             const jijiTableBody = document.getElementById("jiji_table_body");
 
             // Clear the table body
             jijiTableBody.innerHTML = "";
 
-            console.log("Search Results Jiji:", searchResults);
-
-            // Check if 'collection1' exists in searchResults
-            if (searchResults.hasOwnProperty('collection1')) {
-                const resultsArray = searchResults['collection1'];
-                console.log("Collection1 Items:", resultsArray);
-
+            // Check if 'collection3' exists in searchResults
+            if (searchResults.hasOwnProperty('collection3')) {
+                const resultsArray = searchResults['collection3'];
                 if (resultsArray.length === 0) {
-                    // Display a message if there are no items in 'collection1'
-                    console.log("No results found for collection1");
-
-                    jijiTableBody.innerHTML = `
-                        <tr>
-                            <td colspan="4">No results found for this item in this collection. Check your search term and try again.</td>
-                        </tr>`;
-                } else {
-                    // Loop through the search results and populate the table
-                    resultsArray.forEach((item) => {
-                        jijiTableBody.innerHTML += `
-                            <tr>
-                                <td>From Search</td>
-                                <td><a href="itemDetails.html?collection=collection1&itemId=${item._id}">${item["Item Name"]}</a></td>
-                                <td>${item["Price"]}</td>
-                                <td><button onclick="addItemToCompare('${item._id}')">Add to Compare</button></td>
-                            </tr>`;
-                    });
-                }
-            }
-        }
-        */
-
-        // Function to populate the "Jiji" cards with search results from 'collection1'
-        function populateJijiTableWithSearchResults(searchResults) {
-            const jijiTableBody = document.getElementById("jiji_table_body");
-
-            // Clear the table body
-            jijiTableBody.innerHTML = "";
-
-            // Check if 'collection1' exists in searchResults
-            if (searchResults.hasOwnProperty('collection1')) {
-                const resultsArray = searchResults['collection1'];
-                if (resultsArray.length === 0) {
-                    // Display a message if there are no items in 'collection1'
+                    // Display a message if there are no items in 'collection3'
                     jijiTableBody.innerHTML = `
                         <tr>
                             <td colspan="4">No results found for this item in this collection. Check your search term and try again.</td>
@@ -518,15 +479,15 @@
                     resultsArray.forEach((item) => {
                         const jijiTableCard = `
                             <div class="card">
-                                <img src="${item.Image}" alt="${item["Item Name"]}" class="card-img-top">
+                                <img src="${item.image}" alt="${item["name"]}" class="card-img-top">
                                 <div class="card-body">
-                                    <h5 class="card-title">${item["Item Name"]}</h5>
+                                    <a href="itemDetails.html?collection=collection3&itemId=${item._id}">${item["name"]}</a>
                                 </div>
                             </div>`;
                         jijiTableBody.innerHTML += `<tr>
                             <td>From Search</td>
                             <td>${jijiTableCard}</td>
-                            <td>${item.Price}</td>
+                            <td>${item.price}</td>
                             <td><button onclick="addItemToCompare('${item._id}')">Add to Compare</button></td>
                         </tr>`;
                     });
@@ -536,19 +497,19 @@
 
 
 
-        // Function to populate the "Jumia" table with search results from 'collection2'
+        // Function to populate the "Jumia" table with search results from 'collection4'
         function populateJumiaTableWithSearchResults(searchResults) {
             const jumiaTableBody = document.getElementById("jumia_table_body");
 
             // Clear the table body
             jumiaTableBody.innerHTML = "";
 
-            // Check if 'collection2' exists in searchResults
-            if (searchResults.hasOwnProperty('collection2')) {
-                const resultsArray = searchResults['collection2'];
+            // Check if 'collection4' exists in searchResults
+            if (searchResults.hasOwnProperty('collection4')) {
+                const resultsArray = searchResults['collection4'];
 
                 if (resultsArray.length === 0) {
-                    // Display a message if there are no items in 'collection1'
+                    // Display a message if there are no items in 'collection3'
                     jumiaTableBody.innerHTML = `
                         <tr>
                             <td colspan="4">No results found for this item in this collection. Check your search term and try again.</td>
@@ -559,42 +520,42 @@
                         jumiaTableBody.innerHTML += `
                             <tr>
                                 <td>From Search</td>
-                                <td><a href="itemDetails.html?collection=collection2&itemId=${item._id}">${item["name"]}</a></td>
+                                <td><a href="itemDetails.html?collection=collection4&itemId=${item._id}">${item["name"]}</a></td>
                                 <td>${item["Price"]}</td>
-                                <td><button onclick="addItemToCompare('${item._id}')">Add to Compare</button></td>
+                                <td><button onclick="addItemToCompareJumia('${item._id}')">Add to Compare</button></td>
                             </tr>`;
                     });
                 }
             }
         }
 
-        // Function to handle search results for collection2
+        // Function to handle search results for collection4
         function handleJumiaSearchResults(searchQuery) {
-            const searchEndpoint = `https://boiling-fjord-00108-52329a44ed31.herokuapp.com/search?query=${encodeURIComponent(searchQuery)}`;
+            const searchEndpoint = `https://boiling-fjord-00108-52329a44ed31.herokuapp.com/search_products?query=${encodeURIComponent(searchQuery)}`;
 
-            console.log("Searching for collection2:", searchQuery);
+            console.log("Searching for collection4:", searchQuery);
             console.log("Search Endpoint:", searchEndpoint);
 
             // Fetch data from the search API
             fetch(searchEndpoint)
                 .then((response) => response.json())
                 .then((data) => {
-                    console.log("Search results for collection2:", data);
+                    console.log("Search results for collection4:", data);
 
-                    // Call the function to populate the "collection2" table with search results
+                    // Call the function to populate the "collection4" table with search results
                     populateJumiaTableWithSearchResults(data);
 
                     // You can also add additional logic here if needed.
                 })
                 .catch((error) => {
-                    console.error("Error fetching search results for collection2:", error);
+                    console.error("Error fetching search results for collection4:", error);
                 });
         }
 
 
-        // Function to handle search results
+        // Function to handle jiji search results
         function handleJijiSearchResults(searchQuery) {
-            const searchEndpoint = `https://boiling-fjord-00108-52329a44ed31.herokuapp.com/search?query=${encodeURIComponent(searchQuery)}`;
+            const searchEndpoint = `https://boiling-fjord-00108-52329a44ed31.herokuapp.com/search_products?query=${encodeURIComponent(searchQuery)}`;
 
             console.log("Searching for:", searchQuery);
             console.log("Search Endpoint:", searchEndpoint);

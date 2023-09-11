@@ -81,32 +81,31 @@
         <table class="table table-bordered">
             <thead class="table-dark">
                 <tr>
-                    <th scope="col">Item Name</th>
+                    <th scope="col">Item</th>
                     <th scope="col">Price</th>
                     <th scope="col">Description</th>
-                    <th scope="col">Image</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
-            <tbody id="compare_table_collection1"></tbody>
+            <tbody id="compare_table_collection3"></tbody>
         </table>
     </div>
 
-    <!-- Table within page for Collection 2 -->
+    <!-- Table within page for Jumia -->
     <div class="container">
         <table class="table table-bordered">
             <thead class="table-dark">
                 <tr>
-                    <th scope="col">Item Name</th>
+                    <th scope="col">Item</th>
                     <th scope="col">Price</th>
                     <th scope="col">Key features</th>
                     <th scope="col">Specifications</th>
                     <th scope="col">Product Rating</th>
-                    <th scope="col">Image</th>
+                    <th scope="col">Images</th> <!-- Add a header for Images -->
                     <th scope="col"></th>
                 </tr>
             </thead>
-            <tbody id="compare_table_collection2"></tbody>
+            <tbody id="compare_table_collection4"></tbody>
         </table>
     </div>
 
@@ -115,11 +114,11 @@
         crossorigin="anonymous"></script>
 
 
-    <!--COLLECTION 1-->
+    <!--COLLECTION 3-->
     <script>
-        function getItemDetails(itemId) {
+        function getItemDetailsCollection3(itemId) {
             // Make an HTTP GET request to fetch the item details
-            fetch(`https://boiling-fjord-00108-52329a44ed31.herokuapp.com/item/collection1/${itemId}`)
+            fetch(`https://boiling-fjord-00108-52329a44ed31.herokuapp.com/itemV1/collection3/${itemId}`)
                 .then((response) => {
                     if (response.ok) {
                         return response.json(); // Convert the response to an object
@@ -128,65 +127,96 @@
                     }
                 })
                 .then((itemData) => {
+                    // Create a card to display the item details
+                    const card = document.createElement("div");
+                    card.classList.add("card");
+                    card.style.width = "18rem";
+
+                    // Create a link for the item name that points to the item details page
+                    const itemNameLink = document.createElement("a");
+                    itemNameLink.href = `itemDetails.html?collection=collection3&itemId=${itemId}`; // Replace 'itemDetails.html' with the actual URL
+                    itemNameLink.target = "_blank"; // Open in a new tab/window
+                    itemNameLink.textContent = itemData.name;
+
+                    // Create the image element
+                    const image = document.createElement("img");
+                    image.src = itemData.image;
+                    image.classList.add("card-img-top");
+                    image.alt = itemData.name;
+
+                    // Create the card body
+                    const cardBody = document.createElement("div");
+                    cardBody.classList.add("card-body");
+
+                    // Append the image and item name link to the card body
+                    cardBody.appendChild(image);
+                    cardBody.appendChild(itemNameLink);
+
+                    // Append the card body to the card
+                    card.appendChild(cardBody);
+
                     // Populate the item details table
-                    const compareTable = document.getElementById("compare_table_collection1");
+                    const compareTableCollection3 = document.getElementById("compare_table_collection3");
                     const row = document.createElement("tr");
                     row.innerHTML = `
-                        <td>${itemData["Item Name"]}</td>
-                        <td>${itemData.Price}</td>
-                        <td>${itemData.Description}</td>
-                        <td><img src="${itemData.Image}" alt="${itemData["Item Name"]}"/></td>
-                        <td><button onclick="removeItemFromCompare('${itemId}')">Remove</button></td>
+                        <td>${card.outerHTML}</td>
+                        <td>${itemData.price}</td>
+                        <td>${itemData.description}</td>
+                        <td><button onclick="removeItemFromCompareCollection3('${itemId}')">Remove</button></td>
                     `;
-                    compareTable.appendChild(row);
+
+                    // Append the row to the comparison table
+                    compareTableCollection3.appendChild(row);
                 })
                 .catch((error) => {
                     console.log(error);
                 });
         }
 
-        function loadComparisonItems() {
-            const compareItems = JSON.parse(localStorage.getItem("compareItems")) || [];
-            compareItems.forEach((itemId) => {
-                getItemDetails(itemId);
+
+        function loadComparisonItemsCollection3() {
+            const compareItemsCollection3 = JSON.parse(localStorage.getItem("compareItems")) || [];
+            compareItemsCollection3.forEach((itemId) => {
+                getItemDetailsCollection3(itemId);
             });
         }
 
-        function removeItemFromCompare(itemId) {
-            // Retrieve comparedItems from localStorage or initialize it as an empty array
-            let comparedItems = JSON.parse(localStorage.getItem("compareItems")) || [];
+        function removeItemFromCompareCollection3(itemId) {
+            // Retrieve comparedItemsCollection3 from localStorage or initialize it as an empty array
+            let comparedItemsCollection3 = JSON.parse(localStorage.getItem("compareItems")) || [];
 
-            // Remove the item from the comparedItems array
-            comparedItems = comparedItems.filter((item) => item !== itemId);
+            // Remove the item from the comparedItemsCollection3 array
+            comparedItemsCollection3 = comparedItemsCollection3.filter((item) => item !== itemId);
 
             // Update the comparison table
-            updateComparisonTable(comparedItems);
+            updateComparisonTableCollection3(comparedItemsCollection3);
 
-            // Update the localStorage with the updated comparedItems
-            localStorage.setItem("compareItems", JSON.stringify(comparedItems));
+            // Update the localStorage with the updated comparedItemsCollection3
+            localStorage.setItem("compareItems", JSON.stringify(comparedItemsCollection3));
 
             // Display a notification
-            alert("Item removed from comparison");
+            alert("Item removed from comparison for Jiji");
         }
 
-        function updateComparisonTable(comparedItems) {
-            // Get the compare_table element
-            const compareTable = document.getElementById("compare_table_collection1");
+        function updateComparisonTableCollection3(comparedItemsCollection3) {
+            // Get the compare_table_collection3 element
+            const compareTableCollection3 = document.getElementById("compare_table_collection3");
 
             // Clear the existing table content
-            compareTable.innerHTML = "";
+            compareTableCollection3.innerHTML = "";
 
-            // Loop through the comparedItems array and populate the table
-            comparedItems.forEach((itemId) => {
-                getItemDetails(itemId);
+            // Loop through the comparedItemsCollection3 array and populate the table
+            comparedItemsCollection3.forEach((itemId) => {
+                getItemDetailsCollection3(itemId);
             });
         }
 
-        loadComparisonItems();
+        loadComparisonItemsCollection3();
     </script>
 
 
-    <!--COLLECTION 2-->
+
+    <!--COLLECTION 4-->
     <script>
         // Function to create an image gallery modal
         function openImageGallery(images) {
@@ -203,9 +233,26 @@
             modal.style.display = "block";
         }
         
-        function getItemDetailsCollection2(itemId) {
+        function loadComparisonItemsCollection4() {
+            const compareItemsCollection4 = JSON.parse(localStorage.getItem("compareItemsJumia")) || [];
+
+            console.log("Compare Items Collection 4 from localStorage:", compareItemsCollection4);
+
+            const validItemIds = compareItemsCollection4.filter((itemId) => itemId !== undefined && itemId !== null);
+
+            console.log("Loaded items for Collection 4:", validItemIds);
+
+            const compareTableCollection4 = document.getElementById("compare_table_collection4");
+            compareTableCollection4.innerHTML = ''; // Clear the existing table content
+
+            validItemIds.forEach((itemId) => {
+                getItemDetailsCollection4(itemId, compareTableCollection4);
+            });
+        }
+
+        function getItemDetailsCollection4(itemId, compareTableCollection4) {
             // Make an HTTP GET request to fetch the item details
-            fetch(`https://boiling-fjord-00108-52329a44ed31.herokuapp.com/item/collection2/${itemId}`)
+            fetch(`https://boiling-fjord-00108-52329a44ed31.herokuapp.com/itemV1/collection4/${itemId}`)
                 .then((response) => {
                     if (response.ok) {
                         return response.json(); // Convert the response to an object
@@ -214,111 +261,109 @@
                     }
                 })
                 .then((itemData) => {
-                    console.log("Images data:", itemData.images); // Log the fetched data to understand its structure
-                    // Inside getItemDetailsCollection2(itemId) function
-                    if (itemData.images && Array.isArray(itemData.images)) {
-                        // Populate the item details table
-                        const compareTableCollection2 = document.getElementById("compare_table_collection2");
-                        const row = document.createElement("tr");
-                        row.innerHTML = `
-                            <td>${itemData.name}</td>
-                            <td>${itemData.price}</td>
-                            <td>${itemData.key_features}</td>
-                            <td>${itemData.specifications}</td>
-                            <td>${itemData.rating}</td>
-                            <td>
-                                ${itemData.images.map((imageData) => {
-                                    console.log("Processing image data:", imageData);
-                                    if (imageData.startsWith("data:image")) {
-                                        // If the image data is Base64-encoded, use it directly
-                                        return `<img src="${imageData}" alt="${itemData.name}" class="image-expand" />`;
-                                    } else {
-                                        console.log("Image URL:", imageData);
-                                        // If the image data is a URL, create an <img> tag with the URL
-                                        return `<img src="${imageData}" alt="${itemData.name}" class="image-expand" />`;
-                                    }
-                                }).join("")}
-                            </td>
-                            <td><button onclick="removeItemFromCompareCollection2('${itemId}')">Remove</button></td>
-                        `;
-                        compareTableCollection2.appendChild(row);
+                    console.log("Item Data for Collection 4:", itemData);
 
-                        // Add click event to images for expanding
-                        const images = row.querySelectorAll('.image-expand');
-                        images.forEach((image) => {
-                            image.addEventListener('click', () => openImageGallery([image.src]));
-                        });
-                    } else {
-                        console.log("Images array not found or not in the expected format.");
-                    }
+                    // Create a card to display the item image and name
+                    const card = document.createElement("div");
+                    card.classList.add("card");
+                    card.style.width = "18rem";
 
-                    
+                    // Create a link for the item name that points to the item details page
+                    const itemNameLink = document.createElement("a");
+                    itemNameLink.href = `itemDetails.html?collection=collection4&itemId=${itemId}`; // Replace 'itemDetails.html' with the actual URL
+                    itemNameLink.target = "_blank"; // Open in a new tab/window
+                    itemNameLink.textContent = itemData.name;
+
+                    // Create the image element
+                    const image = document.createElement("img");
+                    image.src = itemData.images[0]; // Assuming the first image is used
+                    image.classList.add("card-img-top");
+                    image.alt = itemData.name;
+
+                    // Create the card body
+                    const cardBody = document.createElement("div");
+                    cardBody.classList.add("card-body");
+
+                    // Append the image and item name link to the card body
+                    cardBody.appendChild(image);
+                    cardBody.appendChild(itemNameLink);
+
+                    // Append the card body to the card
+                    card.appendChild(cardBody);
+
+                    // Convert the card to HTML
+                    const cardHTML = card.outerHTML;
+
+                    // Create a table row for the item details
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${cardHTML}</td>
+                        <td>${itemData.price}</td>
+                        <td>${itemData.key_features}</td>
+                        <td>${itemData.specifications}</td>
+                        <td>${itemData.rating}</td>
+                        <td>
+                            ${itemData.images.map((imageData) => {
+                                if (imageData.startsWith("data:image")) {
+                                    return `<img src="${imageData}" alt="${itemData.name}" class="image-expand" />`;
+                                } else {
+                                    return `<img src="${imageData}" alt="${itemData.name}" class="image-expand" />`;
+                                }
+                            }).join("")}
+                        </td>
+                        <td><button onclick="removeItemFromCompareCollection4('${itemId}')">Remove</button></td>
+                    `;
+
+                    // Append the row to the comparison table
+                    compareTableCollection4.appendChild(row);
+
+                    // Add click event to images for expanding
+                    const images = row.querySelectorAll('.image-expand');
+                    images.forEach((image) => {
+                        image.addEventListener('click', () => openImageGallery([image.src]));
+                    });
                 })
                 .catch((error) => {
                     console.log(error);
                 });
         }
 
-        function loadComparisonItemsCollection2() {
-            const compareItemsCollection2 = JSON.parse(localStorage.getItem("compareItemsJumia")) || [];
-            const validItemIds = compareItemsCollection2.filter((itemId) => itemId !== undefined && itemId !== null);
-            
-            console.log("Loaded items for Collection 2:", validItemIds);
-            
-            validItemIds.forEach((itemId) => {
-                getItemDetailsCollection2(itemId);
-            });
-        }
 
-
-        function removeItemFromCompareCollection2(itemId) {
+        function removeItemFromCompareCollection4(itemId) {
             // Retrieve comparedItems from localStorage or initialize it as an empty array
-            let comparedItemsCollection2 = JSON.parse(localStorage.getItem("compareItemsJumia")) || [];
+            let comparedItemsCollection4 = JSON.parse(localStorage.getItem("compareItemsJumia")) || [];
 
             // Remove the item from the comparedItems array
-            comparedItemsCollection2 = comparedItemsCollection2.filter((item) => item !== itemId);
+            comparedItemsCollection4 = comparedItemsCollection4.filter((item) => item !== itemId);
 
             // Update the comparison table
-            updateComparisonTableCollection2(comparedItemsCollection2);
+            updateComparisonTableCollection4(comparedItemsCollection4);
 
             // Update the localStorage with the updated comparedItems
-            localStorage.setItem("compareItemsJumia", JSON.stringify(comparedItemsCollection2));
+            localStorage.setItem("compareItemsJumia", JSON.stringify(comparedItemsCollection4));
 
             // Display a notification
-            alert("Item removed from comparison for Collection 2");
+            alert("Item removed from comparison Jumia");
         }
 
         
-        function updateComparisonTableCollection2() {
-            // Get the compare_table_collection2 element
-            const compareTableCollection2 = document.getElementById("compare_table_collection2");
+        function updateComparisonTableCollection4() {
+            // Get the compare_table_collection4 element
+            const compareTableCollection4 = document.getElementById("compare_table_collection4");
 
             // Clear the existing table content
-            compareTableCollection2.innerHTML = "";
+            compareTableCollection4.innerHTML = "";
 
-            // Get the comparedItemsCollection2 array from localStorage
-            const comparedItemsCollection2 = JSON.parse(localStorage.getItem("compareItemsJumia")) || [];
+            // Get the comparedItemsCollection4 array from localStorage
+            const comparedItemsCollection4 = JSON.parse(localStorage.getItem("compareItemsJumia")) || [];
 
-            // Loop through the comparedItemsCollection2 array and populate the table
-            comparedItemsCollection2.forEach((itemId) => {
-                getItemDetailsCollection2(itemId);
+            // Loop through the comparedItemsCollection4 array and populate the table
+            comparedItemsCollection4.forEach((itemId) => {
+                getItemDetailsCollection4(itemId);
             });
         }
         
-
-        // Update the item details table for Collection 2
-        /*
-        function updateComparisonTableCollection2(comparedItemsCollection2) {
-            const compareTableCollection2 = document.getElementById("compare_table_collection2");
-            compareTableCollection2.innerHTML = "";
-
-            comparedItemsCollection2.forEach((itemId) => {
-                getItemDetailsCollection2(itemId);
-            });
-        }
-        */
-
-    loadComparisonItemsCollection2();
+    loadComparisonItemsCollection4();
 </script>
 
 <!-- Image Gallery Modal -->

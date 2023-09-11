@@ -64,6 +64,9 @@
             padding: 20px;
             background-color: #f5f5f5; /* Use a light gray background color */
         }
+
+        
+
     </style>
 
 </head>
@@ -81,16 +84,18 @@
                 <img id="item-image" src="" alt="Product image">
                 <h1 id="item-name"></h1>
                 <p class="price" id="item-price"></p>
+                <!-- Add Purchase Item button -->
+                <a id="purchase-button" href="" class="btn btn-primary">Purchase Item</a>
                 <p class="rating" id="item-rating" style="color: black;"></p>
             </div>
 
             <!-- Card for description -->
             <div class="card">
-                <p class="description" id="item-description" style="color: black !important;"></p>
+                <p class="description" id="item-description" style="color: black"></p>
                 <p class="specifications" id="item-specifications"></p>
             </div>
         </div>
-    </div> <!-- Close the padding container -->
+    </div> 
 
 
     <script>
@@ -114,7 +119,7 @@
             }
 
             // Make an HTTP GET request to fetch the item details based on the collection
-            fetch(`https://boiling-fjord-00108-52329a44ed31.herokuapp.com/item/${collection}/${itemId}`)
+            fetch(`https://boiling-fjord-00108-52329a44ed31.herokuapp.com/itemV1/${collection}/${itemId}`)
             .then((response) => {
                 if (response.ok) {
                 return response.json(); // Convert the response to an object
@@ -123,19 +128,30 @@
                 }
             })
             .then((itemData) => {
-                if(collection === "collection1") {
+                if(collection === "collection3") {
                     // Populate the item details for jiji
-                    document.getElementById("item-image").src = itemData.Image;
-                    document.getElementById("item-name").textContent = itemData["Item Name"];
-                    document.getElementById("item-price").textContent = itemData.Price;
-                    const formattedDescription = formatDescription(itemData.Description);
+                    document.getElementById("item-image").src = itemData.image;
+                    document.getElementById("item-name").textContent = itemData["name"];
+                    document.getElementById("item-price").textContent = itemData.price;
+                    const formattedDescription = formatDescription(itemData.description);
+                    
+                    // Set the text color to black using the CSS class
                     document.getElementById("item-description").innerHTML = `
-                        <div style="color: black;">
+                        <div>
                             <h2 style="color: green">DESCRIPTION AND FEATURES</h2>
-                            ${formattedDescription}
+                            <p class="description-black">${formattedDescription}</p>
                         </div>`;
-                } else if (collection === "collection2") {
-                    // Display data in the format for collection2
+
+                    console.log(itemData)
+                    // Set the "Purchase Item" button link based on the API data
+                    const purchaseButton = document.getElementById("purchase-button");
+                    if (itemData.Link) {
+                        purchaseButton.href = itemData.Link;
+                    } else {
+                        purchaseButton.style.display = "none"; // Hide the button if no link is provided
+                    }
+                } else if (collection === "collection4") {
+                    // Display data in the format for Jumia
                     document.getElementById("item-image").src = itemData.images[0];
                     document.getElementById("item-name").textContent = itemData.name;
                     document.getElementById("item-price").textContent = `Price: ${itemData.price}`;
@@ -147,6 +163,14 @@
                             <h2 style="color: orange;">SPECIFICATIONS</h2>
                             ${itemData.specifications}
                         </div>`;
+
+                    // Set the "Purchase Item" button link based on the API data
+                    const purchaseButton = document.getElementById("purchase-button");
+                    if (itemData.link) {
+                        purchaseButton.href = itemData.link;
+                    } else {
+                        purchaseButton.style.display = "none"; // Hide the button if no link is provided
+                    }
                 } else {
                     console.error("Invalid collection");
                 }
@@ -159,6 +183,7 @@
 
         // Call the function to display item details when the page loads
         window.onload = displayItemDetails;
+
     </script>
 </body>
 </html>
