@@ -517,10 +517,17 @@
                 } else {
                     // Loop through the search results and populate the table
                     resultsArray.forEach((item) => {
+                        const jumiaTableCard = `
+                            <div class="card">
+                                <img src="${item.images}" alt="${item["name"]}" class="card-img-top">
+                                <div class="card-body">
+                                    <a href="itemDetails.html?collection=collection4&itemId=${item._id}">${item["name"]}</a>
+                                </div>
+                            </div>`;
                         jumiaTableBody.innerHTML += `
                             <tr>
                                 <td>From Search</td>
-                                <td><a href="itemDetails.html?collection=collection4&itemId=${item._id}">${item["name"]}</a></td>
+                                <td>${jumiaTableCard}</td>
                                 <td>${item["price"]}</td>
                                 <td><button onclick="addItemToCompareJumia('${item._id}')">Add to Compare</button></td>
                             </tr>`;
